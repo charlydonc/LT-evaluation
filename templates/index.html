@@ -70,7 +70,7 @@
                 <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
                     <p style="font-size: 18px; margin-bottom: 10px;">📤 Drag and drop CSV files here</p>
                     <p style="color: #666;">or click to browse</p>
-                    <p style="font-size: 12px; color: #999; margin-top: 10px;">CSV must have: watts, lactate, rpe (optional)</p>
+                    <p style="font-size: 12px; color: #999; margin-top: 10px;">CSV must have: watts, lactate<br>RPE (1-10 scale) is optional for validation</p>
                     <p style="font-size: 12px; color: #4CAF50; margin-top: 5px; font-weight: 500;">✨ Upload multiple files to compare!</p>
                 </div>
                 <input type="file" id="fileInput" accept=".csv" multiple onchange="handleFileSelect(event)">
@@ -291,7 +291,8 @@
         <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
             <h4 style="margin: 0 0 15px 0; font-size: 14px; color: #333; text-align: center;">📋 CSV File Format</h4>
             <p style="margin: 0 0 12px 0; font-size: 12px; color: #666; text-align: center;">
-                Your CSV must contain 'watts' (or 'power') and 'lactate' columns. RPE is optional.
+                Your CSV must contain 'watts' (or 'power') and 'lactate' columns.<br>
+                RPE (1-10 scale) is optional for validation only.
             </p>
             <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #e0e0e0; font-family: 'Courier New', monospace; font-size: 11px; overflow-x: auto; margin-bottom: 12px;">
                 <div style="color: #999; margin-bottom: 5px;">Example format:</div>

@@ -1,6 +1,6 @@
 """
 Lactate Threshold Calculator
-Calculates LT1 and LT2 from exercise test data (watts, lactate, RPE).
+Calculates LT1 and LT2 from exercise test data (watts, lactate, and optional RPE 1-10).
 Implements methods from MODEL_DOCUMENTATION.md:
 - LT1: Log-Log Transformation (preferred) or Baseline Plus (fallback)
 - LT2: Modified Dmax (preferred), Standard Dmax, or OBLA 4.0 (fallback)
@@ -506,16 +506,16 @@ class LactateThresholdCalculator:
         rpe_lt1 = np.interp(self.lt1, watts, rpe)
         rpe_lt2 = np.interp(self.lt2, watts, rpe)
         
-        # Check if RPE values are in expected ranges (Borg 6-20 scale)
-        # LT1: ~11-12 ("Light"), LT2: ~15-17 ("Hard" to "Very Hard")
-        lt1_valid = 10 <= rpe_lt1 <= 13
-        lt2_valid = 14 <= rpe_lt2 <= 18
+        # Check if RPE values are in expected ranges (1-10 scale)
+        # LT1: ~4-5 ("Moderate"), LT2: ~7-8 ("Very Hard")
+        lt1_valid = 3 <= rpe_lt1 <= 6
+        lt2_valid = 6 <= rpe_lt2 <= 9
         
         warnings = []
         if not lt1_valid:
-            warnings.append(f"LT1 RPE ({rpe_lt1:.1f}) outside expected range (11-12)")
+            warnings.append(f"LT1 RPE ({rpe_lt1:.1f}) outside expected range (4-5)")
         if not lt2_valid:
-            warnings.append(f"LT2 RPE ({rpe_lt2:.1f}) outside expected range (15-17)")
+            warnings.append(f"LT2 RPE ({rpe_lt2:.1f}) outside expected range (7-8)")
         
         return {
             "available": True,
