@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lactate Threshold Calculator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { background: white; padding: 30px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #333; margin-bottom: 10px; }
+        .subtitle { color: #666; }
+        .content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .panel { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .upload-area { border: 2px dashed #ddd; padding: 40px; text-align: center; border-radius: 8px; margin-bottom: 20px; cursor: pointer; transition: all 0.3s; }
+        .upload-area:hover { border-color: #4CAF50; background: #f9f9f9; }
+        .upload-area.dragover { border-color: #4CAF50; background: #e8f5e9; }
+        input[type="file"] { display: none; }
+        .btn { background: #4CAF50; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 500; width: 100%; margin-top: 10px; transition: background 0.3s; }
+        .btn:hover { background: #45a049; }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
+        .status { padding: 15px; border-radius: 6px; margin: 15px 0; }
+        .status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .status.info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .results { margin-top: 20px; }
+        .metric { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #4CAF50; }
+        .metric-label { font-size: 14px; color: #666; margin-bottom: 5px; }
+        .metric-value { font-size: 32px; font-weight: bold; color: #333; }
+        .metric-unit { font-size: 18px; color: #666; }
+        select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 15px; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; font-weight: 600; }
+        .plot-container { margin-top: 20px; text-align: center; }
+        .plot-container img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .loading { display: none; text-align: center; padding: 20px; }
+        .loading.active { display: block; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @media (max-width: 968px) { .content { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Lactate Threshold Calculator</h1>
+            <p class="subtitle">Calculate LT1 (aerobic threshold) and LT2 (anaerobic threshold) from exercise test data</p>
+        </div>
+
+        <div class="content">
+            <div class="panel">
+                <h2>📁 Data Import</h2>
+                
+                <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                    <p style="font-size: 18px; margin-bottom: 10px;">📤 Drag and drop CSV files here</p>
+                    <p style="color: #666;">or click to browse</p>
+                    <p style="font-size: 12px; color: #999; margin-top: 10px;">CSV must have: watts, lactate, rpe (optional)</p>
+                    <p style="font-size: 12px; color: #4CAF50; margin-top: 5px; font-weight: 500;">✨ Upload multiple files to compare!</p>
+                </div>
+                <input type="file" id="fileInput" accept=".csv" multiple onchange="handleFileSelect(event)">
+                
+                <div id="fileStatus"></div>
+                
+                <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #2196F3;">
+                    <h3 style="margin: 0 0 10px 0; color: #1976D2;">⚙️ Calculation Methods</h3>
+                    <p style="margin: 5px 0; font-size: 14px;"><strong>LT1:</strong> Log-Log Transformation</p>
+                    <p style="margin: 5px 0; font-size: 14px;"><strong>LT2:</strong> Modified Dmax</p>
+                    <p style="margin: 10px 0 0 0; font-size: 12px; color: #666;">These are the most scientifically accurate methods.</p>
+                </div>
+                
+                <button class="btn" id="calculateBtn" onclick="calculateThresholds()" disabled>🔢 Calculate Thresholds</button>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 10px;">Calculating...</p>
+                </div>
+                
+                <div id="resultsContainer"></div>
+            </div>
+
+            <div class="panel">
+                <h2>📊 Visualization</h2>
+                <div id="plotContainer">
+                    <div style="padding: 60px; text-align: center; color: #999;">
+                        <p style="font-size: 18px;">📈 Upload a CSV file and calculate thresholds to see the lactate curve</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let filesData = [];
+        
+        // Drag and drop handlers
+        const uploadArea = document.getElementById('uploadArea');
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            if (files.length > 0) {
+                handleFiles(files);
+            }
+        });
+        
+        function handleFileSelect(event) {
+            const files = Array.from(event.target.files);
+            if (files.length > 0) {
+                handleFiles(files);
+            }
+        }
+        
+        function handleFiles(files) {
+            const formData = new FormData();
+            files.forEach(file => {
+                formData.append('files[]', file);
+            });
+            
+            document.getElementById('fileStatus').innerHTML = `<div class="status info">⏳ Loading ${files.length} file(s)...</div>`;
+            document.getElementById('calculateBtn').disabled = true;
+            
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('fileStatus').innerHTML = `<div class="status error">❌ ${data.error}</div>`;
+                } else {
+                    filesData = data.files;
+                    let statusHtml = '<div class="status success">✅ Files loaded successfully<br><br>';
+                    data.files.forEach(file => {
+                        statusHtml += `<strong>${file.filename}</strong>: ${file.rows} data points<br>`;
+                    });
+                    statusHtml += '</div>';
+                    document.getElementById('fileStatus').innerHTML = statusHtml;
+                    document.getElementById('calculateBtn').disabled = false;
+                }
+            })
+            .catch(error => {
+                document.getElementById('fileStatus').innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            });
+        }
+        
+        function calculateThresholds() {
+            if (!filesData || filesData.length === 0) return;
+            
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('calculateBtn').disabled = true;
+            document.getElementById('resultsContainer').innerHTML = '';
+            
+            fetch('/calculate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    files_data: filesData
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('calculateBtn').disabled = false;
+                
+                if (data.error) {
+                    document.getElementById('resultsContainer').innerHTML = `<div class="status error">❌ ${data.error}</div>`;
+                } else {
+                    const results = data.results;
+                    
+                    // Build comparison cards
+                    let comparisonHtml = '';
+                    results.forEach((r, index) => {
+                        if (r.error) {
+                            comparisonHtml += `
+                                <div style="background: #ffebee; padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #f44336;">
+                                    <h4 style="margin: 0 0 10px 0; color: #c62828;">${r.filename}</h4>
+                                    <p style="color: red; margin: 0;">Error: ${r.error}</p>
+                                </div>
+                            `;
+                        } else {
+                            comparisonHtml += `
+                                <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #4CAF50;">
+                                    <h4 style="margin: 0 0 15px 0; color: #333; font-size: 16px;">${r.filename}</h4>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                        <div class="metric" style="margin: 0; border-left-color: #4CAF50;">
+                                            <div class="metric-label" style="font-size: 12px;">🟢 LT1 (Aerobic)</div>
+                                            <div class="metric-value" style="font-size: 28px;">${r.lt1} <span class="metric-unit" style="font-size: 16px;">W</span></div>
+                                        </div>
+                                        <div class="metric" style="margin: 0; border-left-color: #f44336;">
+                                            <div class="metric-label" style="font-size: 12px;">🔴 LT2 (Anaerobic)</div>
+                                            <div class="metric-value" style="font-size: 28px;">${r.lt2} <span class="metric-unit" style="font-size: 16px;">W</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            // Add improvement indicator if there's a previous result
+                            if (index > 0 && !results[index - 1].error) {
+                                const prevResult = results[index - 1];
+                                const lt1Diff = r.lt1 - prevResult.lt1;
+                                const lt2Diff = r.lt2 - prevResult.lt2;
+                                
+                                const lt1Arrow = lt1Diff > 0 ? '↑' : lt1Diff < 0 ? '↓' : '→';
+                                const lt2Arrow = lt2Diff > 0 ? '↑' : lt2Diff < 0 ? '↓' : '→';
+                                const lt1Color = lt1Diff > 0 ? '#4CAF50' : lt1Diff < 0 ? '#f44336' : '#666';
+                                const lt2Color = lt2Diff > 0 ? '#4CAF50' : lt2Diff < 0 ? '#f44336' : '#666';
+                                
+                                comparisonHtml += `
+                                    <div style="background: #f8f9fa; padding: 12px 20px; border-radius: 8px; margin-bottom: 15px; text-align: center; border: 2px dashed #ddd;">
+                                        <div style="font-size: 11px; color: #666; margin-bottom: 5px;">Change from previous test</div>
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                            <div>
+                                                <span style="font-size: 18px; font-weight: bold; color: ${lt1Color};">
+                                                    ${lt1Arrow} ${Math.abs(lt1Diff).toFixed(1)} W
+                                                </span>
+                                                <div style="font-size: 10px; color: #999;">LT1</div>
+                                            </div>
+                                            <div>
+                                                <span style="font-size: 18px; font-weight: bold; color: ${lt2Color};">
+                                                    ${lt2Arrow} ${Math.abs(lt2Diff).toFixed(1)} W
+                                                </span>
+                                                <div style="font-size: 10px; color: #999;">LT2</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        }
+                    });
+                    
+                    document.getElementById('resultsContainer').innerHTML = `
+                        <div class="results">
+                            <h3 style="margin: 20px 0 15px 0;">📊 Comparison Results</h3>
+                            ${comparisonHtml}
+                            <p style="margin-top: 15px; font-size: 12px; color: #666; text-align: center;">
+                                <strong>Methods:</strong> LT1 = Log-Log | LT2 = Modified Dmax
+                            </p>
+                        </div>
+                    `;
+                    
+                    // Build plots
+                    let plotsHtml = '';
+                    results.forEach(r => {
+                        if (!r.error) {
+                            plotsHtml += `
+                                <div class="plot-container" style="margin-bottom: 20px;">
+                                    <img src="data:image/png;base64,${r.plot}" alt="${r.filename}">
+                                </div>
+                            `;
+                        }
+                    });
+                    document.getElementById('plotContainer').innerHTML = plotsHtml || '<p>No plots available</p>';
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('calculateBtn').disabled = false;
+                document.getElementById('resultsContainer').innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            });
+        }
+    </script>
+</body>
+</html>
