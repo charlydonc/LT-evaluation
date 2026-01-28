@@ -551,9 +551,14 @@ class LactateThresholdCalculator:
         if lt1 >= lt2:
             logger.warning(f"LT1 ({lt1:.1f}W) >= LT2 ({lt2:.1f}W). Results may be invalid.")
         
+        # Calculate FTP as 95% of LT2
+        # FTP represents the maximum power sustainable for ~1 hour
+        ftp = round(lt2 * 0.95, 1)
+        
         results = {
             "LT1_watts": round(lt1, 1),
             "LT2_watts": round(lt2, 1),
+            "FTP_watts": ftp,
             "baseline_lactate": round(self.baseline_lactate, 2),
             "polynomial_r2": round(self.poly_r2, 4) if self.poly_r2 else None,
             "lt1_method": lt1_method,
