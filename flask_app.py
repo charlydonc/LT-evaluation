@@ -20,6 +20,26 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max
 def index():
     return render_template('index.html')
 
+@app.route('/download-template')
+def download_template():
+    """Provide a sample CSV template for download."""
+    csv_content = """watts,lactate,rpe
+150,1.1,2
+170,1.2,3
+190,1.3,4
+210,1.5,5
+230,1.9,6
+250,2.8,7
+270,4.2,8
+290,6.5,9
+"""
+    from flask import Response
+    return Response(
+        csv_content,
+        mimetype="text/csv",
+        headers={"Content-disposition": "attachment; filename=lactate_test_template.csv"}
+    )
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
     try:
