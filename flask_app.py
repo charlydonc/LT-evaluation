@@ -181,11 +181,61 @@ def calculate():
                 plot_base64 = base64.b64encode(buffer.read()).decode()
                 plt.close()
                 
+                # Calculate 5-zone power zones based on LT1 and LT2
+                # Z1: Recovery (up to 70% of LT1)
+                # Z2: Endurance (70% of LT1 to LT1)
+                # Z3: Tempo (LT1 to midpoint between LT1 and LT2)
+                # Z4: Threshold (midpoint to LT2)
+                # Z5: VO2 Max (above LT2)
+                
+                z1_max = int(lt1 * 0.70)
+                z2_min = z1_max + 1
+                z2_max = int(lt1)
+                z3_min = z2_max + 1
+                z3_max = int((lt1 + lt2) / 2)
+                z4_min = z3_max + 1
+                z4_max = int(lt2)
+                z5_min = z4_max + 1
+                
+                zones = {
+                    'Z1': {
+                        'name': 'Active Recovery',
+                        'watts': f'< {z1_max}W',
+                        'duration': '> 3 hours',
+                        'color': '#90CAF9'
+                    },
+                    'Z2': {
+                        'name': 'Endurance',
+                        'watts': f'{z2_min} - {z2_max}W',
+                        'duration': '2-6 hours',
+                        'color': '#66BB6A'
+                    },
+                    'Z3': {
+                        'name': 'Tempo',
+                        'watts': f'{z3_min} - {z3_max}W',
+                        'duration': '1-3 hours',
+                        'color': '#FFD54F'
+                    },
+                    'Z4': {
+                        'name': 'Threshold',
+                        'watts': f'{z4_min} - {z4_max}W',
+                        'duration': '30-60 min',
+                        'color': '#FF9800'
+                    },
+                    'Z5': {
+                        'name': 'VO2 Max',
+                        'watts': f'{z5_min}W+',
+                        'duration': '3-8 min',
+                        'color': '#EF5350'
+                    }
+                }
+                
                 results.append({
                     'filename': filename,
                     'lt1': lt1,
                     'lt2': lt2,
                     'ftp': ftp,
+                    'zones': zones,
                     'baseline': float(round(baseline, 2)),
                     'r2': float(round(calc.poly_r2, 4)) if calc.poly_r2 else None,
                     'plot': plot_base64

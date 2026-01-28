@@ -71,6 +71,74 @@ The 95% relationship comes from the fact that:
 
 This estimation provides a practical training metric without requiring a dedicated 1-hour time trial.
 
+### Training Zones (5-Zone Model)
+
+The application uses a **5-zone model** based on the actual physiological thresholds (LT1 and LT2) rather than arbitrary FTP percentages. This provides personalized, physiologically-accurate training zones:
+
+| Zone | Name | Power Range | Typical Duration | Purpose |
+|------|------|-------------|------------------|---------|
+| **Z1** | Active Recovery | < 70% of LT1 | > 3 hours | Recovery rides, warm-up, cool-down |
+| **Z2** | Endurance | 70% of LT1 to LT1 | 2-6 hours | Aerobic base building, long steady rides |
+| **Z3** | Tempo | LT1 to midpoint (LT1-LT2) | 1-3 hours | Sustained aerobic efforts, "sweet spot" |
+| **Z4** | Threshold | Midpoint to LT2 | 30-60 min | Lactate threshold training, race pace |
+| **Z5** | VO2 Max | > LT2 | 3-8 min | High-intensity intervals, anaerobic capacity |
+
+**Calculation Logic:**
+```
+Z1_max = LT1 × 0.70
+Z2_min = Z1_max + 1
+Z2_max = LT1
+Z3_min = LT1 + 1
+Z3_max = (LT1 + LT2) / 2
+Z4_min = Z3_max + 1
+Z4_max = LT2
+Z5_min = LT2 + 1
+```
+
+#### Zone Characteristics
+
+**Zone 1 (Active Recovery):**
+- Well below LT1 (< 70% of LT1)
+- Conversation is very easy
+- Used for recovery between hard efforts or active recovery days
+- Minimal training adaptation but promotes blood flow and recovery
+- Can be sustained for > 3 hours
+
+**Zone 2 (Endurance):**
+- From 70% of LT1 up to LT1 (aerobic threshold)
+- Conversation is comfortable
+- Builds aerobic base and mitochondrial density
+- Highest volume zone for most athletes
+- Fat oxidation is maximized
+- Can be sustained for 2-6 hours
+
+**Zone 3 (Tempo):**
+- Between LT1 and the midpoint to LT2
+- Conversation becomes difficult
+- Improves lactate clearance and muscular endurance
+- "Sweet spot" training falls in this zone
+- Can be sustained for 1-3 hours
+
+**Zone 4 (Threshold):**
+- From midpoint (LT1-LT2) up to LT2 (anaerobic threshold)
+- Conversation is not possible
+- Directly improves lactate threshold and FTP
+- Sustainable for 30-60 minutes
+- Most effective for improving race performance
+
+**Zone 5 (VO2 Max):**
+- Above LT2 (anaerobic threshold)
+- Maximal aerobic effort
+- Improves VO2 max and anaerobic capacity
+- Used in short intervals of 3-8 minutes
+- High fatigue, low volume
+
+#### Practical Application
+
+The zones are calculated automatically from the measured LT1 and LT2 thresholds, making them highly personalized to each athlete's physiology. This is more accurate than generic FTP percentage-based zones because it accounts for individual metabolic responses.
+
+When multiple test files are uploaded, the zones are calculated from the **latest test** to reflect current fitness level.
+
 ---
 
 ## Technical Specification: Lactate Threshold Estimation (LT1 & LT2)

@@ -270,6 +270,42 @@
                         }
                     });
                     
+                    // Build training zones (use latest file without error)
+                    let latestResult = null;
+                    for (let i = results.length - 1; i >= 0; i--) {
+                        if (!results[i].error) {
+                            latestResult = results[i];
+                            break;
+                        }
+                    }
+                    
+                    let zonesHtml = '';
+                    if (latestResult && latestResult.zones) {
+                        const zones = latestResult.zones;
+                        zonesHtml = `
+                            <div style="background: white; padding: 25px; border-radius: 8px; margin-top: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                <h3 style="margin: 0 0 10px 0; color: #333; font-size: 18px;">🎯 Training Zones (5-Zone Model)</h3>
+                                <p style="margin: 0 0 20px 0; font-size: 13px; color: #666;">
+                                    Based on LT1: <strong>${latestResult.lt1}W</strong> | LT2: <strong>${latestResult.lt2}W</strong> | FTP: <strong>${latestResult.ftp}W</strong>
+                                    <br><span style="font-size: 11px; color: #999;">from ${latestResult.filename}</span>
+                                </p>
+                                <div style="display: grid; gap: 8px;">
+                                    ${Object.entries(zones).map(([zoneKey, zone]) => `
+                                        <div style="display: grid; grid-template-columns: 50px 180px 1fr 150px; gap: 12px; align-items: center; padding: 14px 16px; background: ${zone.color}; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                            <div style="font-weight: bold; font-size: 17px; color: #1a1a1a;">${zoneKey}</div>
+                                            <div style="font-weight: 600; font-size: 15px; color: #1a1a1a;">${zone.name}</div>
+                                            <div style="font-size: 15px; color: #1a1a1a; font-weight: 600; text-align: right;">${zone.watts}</div>
+                                            <div style="font-size: 13px; color: #333; text-align: right; font-style: italic;">${zone.duration}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <p style="margin: 20px 0 0 0; font-size: 11px; color: #999; text-align: center;">
+                                    💡 Zones are calculated from your physiological thresholds (LT1 & LT2) | Duration = typical sustainable time at this intensity
+                                </p>
+                            </div>
+                        `;
+                    }
+                    
                     document.getElementById('resultsContainer').innerHTML = `
                         <div class="results">
                             <h3 style="margin: 20px 0 15px 0;">📊 Comparison Results</h3>
@@ -277,6 +313,7 @@
                             <p style="margin-top: 15px; font-size: 12px; color: #666; text-align: center;">
                                 <strong>Methods:</strong> LT1 = Log-Log | LT2 = Modified Dmax
                             </p>
+                            ${zonesHtml}
                         </div>
                     `;
                     
