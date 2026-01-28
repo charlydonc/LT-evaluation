@@ -47,6 +47,20 @@
         <div class="header">
             <h1>📊 Lactate Threshold Calculator</h1>
             <p class="subtitle">Calculate LT1 (aerobic threshold) and LT2 (anaerobic threshold) from exercise test data</p>
+            
+            <div style="background: #f0f8ff; border-left: 4px solid #2196F3; padding: 20px; margin-top: 20px; border-radius: 8px;">
+                <h3 style="margin: 0 0 12px 0; color: #1976D2; font-size: 16px;">💡 What This Tool Does</h3>
+                <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.6; color: #333;">
+                    Lactate thresholds are key physiological markers that help determine your training zones and predict performance. 
+                    <strong>LT1</strong> marks the upper limit of your aerobic zone where lactate begins to accumulate, while 
+                    <strong>LT2</strong> represents your anaerobic threshold - the maximum intensity you can sustain for extended periods.
+                </p>
+                <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #333;">
+                    This calculator uses scientifically validated methods (<strong>Log-Log transformation</strong> for LT1 and 
+                    <strong>Modified Dmax</strong> for LT2) to precisely identify these breakpoints from your lactate test data. 
+                    Upload your test results to get accurate power-based training zones and track your progress over time.
+                </p>
+            </div>
         </div>
 
         <div class="content">
@@ -271,5 +285,43 @@
             });
         }
     </script>
+
+    <!-- Footer with References -->
+    <div style="margin-top: 40px; padding: 30px; background: #f8f9fa; border-top: 1px solid #ddd; border-radius: 10px; max-width: 1400px; margin-left: auto; margin-right: auto;">
+        <p style="margin: 0 0 15px 0; font-size: 12px; color: #999; text-align: center;">
+            💡 CSV files must contain 'watts' (or 'power') and 'lactate' columns
+        </p>
+        <details style="text-align: center; margin-top: 20px;">
+            <summary style="cursor: pointer; font-size: 11px; color: #999; user-select: none;">
+                📚 Scientific References & Sources
+            </summary>
+            <div style="margin-top: 15px; font-size: 10px; color: #aaa; line-height: 1.8; text-align: left; max-width: 900px; margin-left: auto; margin-right: auto; column-count: 2; column-gap: 20px;">
+                <a href="https://www.trainingpeaks.com/coach-blog/lactate-threshold-testing-better-performance/" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">TrainingPeaks: Lactate Threshold Testing</a>
+                <a href="https://www.unm.edu/~lkravitz/Article%20folder/lactatethreshold.html" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">UNM: Lactate Threshold Research</a>
+                <a href="https://www.highnorth.co.uk/articles/lactate-testing-cycling" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">High North: Lactate Testing</a>
+                <a href="https://www.researchgate.net/publication/10950494_Maximal_lactate_steady_state_concentration_MLSS_Experimental_and_modelling_approaches" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">MLSS Experimental Approaches</a>
+                <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12354492/" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">NCBI PMC: Lactate Study (1)</a>
+                <a href="https://upsidestrength.com/blog/lactate-threshold-interpretation/" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">Upside Strength: Interpretation</a>
+                <a href="https://www.researchgate.net/publication/340118384_A_Step-Ramp-Step_Protocol_to_Identify_the_Maximal_Metabolic_Steady_State" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">Step-Ramp-Step Protocol</a>
+                <a href="https://cyclingcoachai.com/what-is-lt1-and-lt2/" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">Cycling Coach AI: LT1 & LT2</a>
+                <a href="https://www.mdpi.com/1424-8220/23/2/826" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">MDPI Sensors: LT Detection</a>
+                <a href="https://rouvy.com/blog/lactate-threshold-in-cycling" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">Rouvy: LT in Cycling</a>
+                <a href="https://trainright.com/rpe-rating-of-perceived-exertion-in-training-and-racing/" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">Carmichael Training: RPE</a>
+                <a href="https://www.researchgate.net/publication/236267189_A_Novel_Approach_for_Lactate_Threshold_Assessment_Based_on_Rating_of_Perceived_Exertion" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">LT Assessment via RPE</a>
+                <a href="https://robertovukovic.com/new-ftp-test/" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">Roberto Vukovic: FTP Testing</a>
+                <a href="https://www.sportsciencesupport.com/determination-of-the-threshold-by-the-d-max-method-logic-and-math/" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">D-max Method: Logic & Math</a>
+                <a href="https://www.sportsciencesupport.com/d-max-calculator/" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">Sports Science: D-max Calculator</a>
+                <a href="https://www.researchgate.net/publication/272842564_Standardization_of_the_Dmax_Method_for_Calculating_the_Second_Lactate_Threshold" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">Dmax Standardization</a>
+                <a href="https://www.researchgate.net/publication/246277510_Lactate_Threshold_D-Max_Method_and_Maximal_Lactate_Steady_State_in_Cyclists" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">D-max & MLSS in Cyclists</a>
+                <a href="https://www.researchgate.net/publication/359387466_The_mathematical_modeling_of_lactate_curves_from_graded_incremental_exercise_tests" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">Mathematical Modeling of Lactate</a>
+                <a href="https://www.researchgate.net/publication/221737178_Comparison_of_a_Field-Based_Test_to_Estimate_Functional_Threshold_Power_and_Power_Output_at_Lactate_Threshold" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">Field vs Lab Testing Comparison</a>
+                <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11107085/" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">NCBI PMC: Lactate Study (2)</a>
+                <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5676318/" target="_blank" style="color: #aaa; text-decoration: none; display: block; margin-bottom: 5px;">NCBI PMC: Lactate Study (3)</a>
+            </div>
+        </details>
+        <p style="margin: 20px 0 0 0; font-size: 10px; color: #ccc; text-align: center;">
+            © 2026 Lactate Threshold Calculator · Made with ❤️ for athletes and coaches
+        </p>
+    </div>
 </body>
 </html>
