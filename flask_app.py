@@ -170,7 +170,8 @@ def calculate():
                 ax.set_title(filename, fontsize=12, fontweight='bold')
                 ax.grid(True, alpha=0.3)
                 ax.legend(fontsize=9)
-                ax.set_xlim(left=0)
+                # Set x-axis to start at first data point with small margin
+                ax.set_xlim(left=watts_array.min() - 10)
                 ax.set_ylim(bottom=0)
                 plt.tight_layout()
                 
