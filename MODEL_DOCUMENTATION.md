@@ -14,6 +14,7 @@ The model analyzes exercise test data containing:
 And calculates:
 - **LT1**: First lactate threshold (aerobic threshold) - the point where lactate begins to rise above baseline
 - **LT2**: Second lactate threshold (anaerobic threshold) - the point of rapid lactate accumulation
+- **FTP**: Functional Threshold Power - estimated as 95% of LT2, representing the maximum power sustainable for ~1 hour
 
 ## Input Data Format
 
@@ -53,6 +54,22 @@ LT2 is typically identified as:
 - The point where lactate increases rapidly (inflection point)
 
 **Method**: Fixed threshold (4.0 mmol/L) or D-max method
+
+### FTP (Functional Threshold Power)
+
+FTP represents the maximum power an athlete can sustain for approximately one hour. It is a key metric in cycling and endurance sports for:
+- Setting training zones
+- Tracking fitness improvements
+- Pacing race efforts
+
+**Estimation Method**: FTP is calculated as **95% of LT2**
+
+The 95% relationship comes from the fact that:
+- LT2 represents the anaerobic threshold (MLSS - Maximal Lactate Steady State)
+- LT2 is typically sustainable for 40-60 minutes at near-maximum effort
+- Real-world FTP (1-hour power) is slightly lower (~95%) due to additional factors like fatigue, pacing variability, and environmental conditions
+
+This estimation provides a practical training metric without requiring a dedicated 1-hour time trial.
 
 ---
 
