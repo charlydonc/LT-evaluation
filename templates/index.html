@@ -88,8 +88,7 @@
                 </p>
                 <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.6; color: #333;">
                     This calculator uses scientifically validated methods (<strong>Log-Log transformation</strong> for LT1 and 
-                    <strong>Modified Dmax</strong> for LT2) to precisely identify these breakpoints from your lactate test data. 
-                    It also estimates your <strong>FTP (Functional Threshold Power)</strong> as 95% of LT2, representing the maximum power you can sustain for approximately one hour.
+                    <strong>Modified Dmax</strong> for LT2) to precisely identify these breakpoints from your lactate test data.
                 </p>
                 <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #333;">
                     Enter your test results manually below to get accurate power-based training zones and track your progress over time.
@@ -445,7 +444,7 @@
                             comparisonHtml += `
                                 <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #4CAF50;">
                                     <h4 style="margin: 0 0 15px 0; color: #333; font-size: 16px;">${r.filename}</h4>
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                                         <div class="metric" style="margin: 0; border-left-color: #4CAF50;">
                                             <div class="metric-label" style="font-size: 12px;">🟢 LT1 (Aerobic)</div>
                                             <div class="metric-value" style="font-size: 28px;">${r.lt1} <span class="metric-unit" style="font-size: 16px;">W</span></div>
@@ -453,10 +452,6 @@
                                         <div class="metric" style="margin: 0; border-left-color: #f44336;">
                                             <div class="metric-label" style="font-size: 12px;">🔴 LT2 (Anaerobic)</div>
                                             <div class="metric-value" style="font-size: 28px;">${r.lt2} <span class="metric-unit" style="font-size: 16px;">W</span></div>
-                                        </div>
-                                        <div class="metric" style="margin: 0; border-left-color: #FF9800;">
-                                            <div class="metric-label" style="font-size: 12px;">⚡ FTP (1-hour)</div>
-                                            <div class="metric-value" style="font-size: 28px;">${r.ftp} <span class="metric-unit" style="font-size: 16px;">W</span></div>
                                         </div>
                                     </div>
                                 </div>
@@ -467,19 +462,16 @@
                                 const prevResult = results[index - 1];
                                 const lt1Diff = r.lt1 - prevResult.lt1;
                                 const lt2Diff = r.lt2 - prevResult.lt2;
-                                const ftpDiff = r.ftp - prevResult.ftp;
                                 
                                 const lt1Arrow = lt1Diff > 0 ? '↑' : lt1Diff < 0 ? '↓' : '→';
                                 const lt2Arrow = lt2Diff > 0 ? '↑' : lt2Diff < 0 ? '↓' : '→';
-                                const ftpArrow = ftpDiff > 0 ? '↑' : ftpDiff < 0 ? '↓' : '→';
                                 const lt1Color = lt1Diff > 0 ? '#4CAF50' : lt1Diff < 0 ? '#f44336' : '#666';
                                 const lt2Color = lt2Diff > 0 ? '#4CAF50' : lt2Diff < 0 ? '#f44336' : '#666';
-                                const ftpColor = ftpDiff > 0 ? '#4CAF50' : ftpDiff < 0 ? '#f44336' : '#666';
                                 
                                 comparisonHtml += `
                                     <div style="background: #f8f9fa; padding: 12px 20px; border-radius: 8px; margin-bottom: 15px; text-align: center; border: 2px dashed #ddd;">
                                         <div style="font-size: 11px; color: #666; margin-bottom: 5px;">Change from previous test</div>
-                                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                                             <div>
                                                 <span style="font-size: 18px; font-weight: bold; color: ${lt1Color};">
                                                     ${lt1Arrow} ${Math.abs(lt1Diff).toFixed(1)} W
@@ -491,12 +483,6 @@
                                                     ${lt2Arrow} ${Math.abs(lt2Diff).toFixed(1)} W
                                                 </span>
                                                 <div style="font-size: 10px; color: #999;">LT2</div>
-                                            </div>
-                                            <div>
-                                                <span style="font-size: 18px; font-weight: bold; color: ${ftpColor};">
-                                                    ${ftpArrow} ${Math.abs(ftpDiff).toFixed(1)} W
-                                                </span>
-                                                <div style="font-size: 10px; color: #999;">FTP</div>
                                             </div>
                                         </div>
                                     </div>
@@ -521,7 +507,7 @@
                             <div style="background: white; padding: 25px; border-radius: 8px; margin-top: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                                 <h3 style="margin: 0 0 10px 0; color: #333; font-size: 18px;">🎯 Training Zones (5-Zone Model)</h3>
                                 <p style="margin: 0 0 20px 0; font-size: 13px; color: #666;">
-                                    Based on LT1: <strong>${latestResult.lt1}W</strong> | LT2: <strong>${latestResult.lt2}W</strong> | FTP: <strong>${latestResult.ftp}W</strong>
+                                    Based on LT1: <strong>${latestResult.lt1}W</strong> | LT2: <strong>${latestResult.lt2}W</strong>
                                     <br><span style="font-size: 11px; color: #999;">from ${latestResult.filename}</span>
                                 </p>
                                 <div style="display: grid; gap: 8px;">

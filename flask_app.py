@@ -124,9 +124,6 @@ def calculate():
                 
                 # Calculate LT2 using Modified Dmax method
                 lt2 = float(round(calc.calculate_lt2(method='moddmax'), 1))
-                
-                # Calculate FTP as 95% of LT2
-                ftp = float(round(lt2 * 0.95, 1))
         
                 # Get data for plotting
                 data_df = calc.get_data()
@@ -236,7 +233,6 @@ def calculate():
                     'filename': filename,
                     'lt1': lt1,
                     'lt2': lt2,
-                    'ftp': ftp,
                     'zones': zones,
                     'baseline': float(round(baseline, 2)),
                     'r2': float(round(calc.poly_r2, 4)) if calc.poly_r2 else None,
