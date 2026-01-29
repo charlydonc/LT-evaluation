@@ -20,93 +20,94 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max
 def index():
     return render_template('index.html')
 
-@app.route('/download-template')
-def download_template():
-    """Provide a sample CSV template for download."""
-    csv_content = """watts,lactate,rpe
-150,1.1,2
-170,1.2,3
-190,1.3,4
-210,1.5,5
-230,1.9,6
-250,2.8,7
-270,4.2,8
-290,6.5,9
-"""
-    from flask import Response
-    return Response(
-        csv_content,
-        mimetype="text/csv",
-        headers={"Content-disposition": "attachment; filename=lactate_test_template.csv"}
-    )
-
-@app.route('/upload', methods=['POST'])
-def upload_file():
+@app.route('/submit-test', methods=['POST'])
+def submit_test():
+    """Handle manual form data submission for lactate tests."""
     try:
-        if 'files[]' not in request.files:
-            return jsonify({'error': 'No files uploaded'}), 400
+        data = request.json
+        tests = data.get('tests', [])
         
-        files = request.files.getlist('files[]')
-        if not files or files[0].filename == '':
-            return jsonify({'error': 'No files selected'}), 400
+        if not tests:
+            return jsonify({'error': 'No test data provided'}), 400
         
-        results = []
+        validated_tests = []
         
-        for file in files:
-            if not file.filename.endswith('.csv'):
-                return jsonify({'error': f'{file.filename} is not a CSV file'}), 400
+        for test in tests:
+            test_date = test.get('date', '')
+            intervals = test.get('intervals', [])
             
-            # Read CSV
-            csv_content = file.read()
-            df = pd.read_csv(io.BytesIO(csv_content))
+            if not test_date:
+                return jsonify({'error': 'Test date is required'}), 400
             
-            # Normalize columns
-            df.columns = df.columns.str.lower().str.strip()
+            if not intervals or len(intervals) < 3:
+                return jsonify({'error': 'At least 3 intervals required per test'}), 400
             
-            # Validate
-            if 'power' in df.columns and 'watts' not in df.columns:
-                df['watts'] = df['power']
+            # Convert to DataFrame format
+            watts_list = []
+            lactate_list = []
+            rpe_list = []
             
-            if 'watts' not in df.columns:
-                return jsonify({'error': f'{file.filename} missing watts/power column'}), 400
+            for interval in intervals:
+                try:
+                    power = float(interval.get('power', 0))
+                    lactate = float(interval.get('lactate', 0))
+                    rpe = interval.get('rpe', '')
+                    
+                    if power <= 0 or lactate <= 0:
+                        continue
+                    
+                    watts_list.append(power)
+                    lactate_list.append(lactate)
+                    rpe_list.append(float(rpe) if rpe and str(rpe).strip() else None)
+                    
+                except (ValueError, TypeError):
+                    continue
             
-            if 'lactate' not in df.columns:
-                return jsonify({'error': f'{file.filename} missing lactate column'}), 400
+            if len(watts_list) < 3:
+                return jsonify({'error': f'Test {test_date}: insufficient valid data points'}), 400
             
-            # Return data preview - convert to native Python types
-            preview_df = df.head(10).copy()
-            for col in preview_df.select_dtypes(include=['int64', 'float64']).columns:
-                preview_df[col] = preview_df[col].astype(float)
+            # Create CSV-like string for existing calculator
+            csv_lines = ['watts,lactate,rpe']
+            for w, l, r in zip(watts_list, lactate_list, rpe_list):
+                rpe_str = str(r) if r is not None else ''
+                csv_lines.append(f'{w},{l},{rpe_str}')
+            csv_data = '\n'.join(csv_lines)
             
-            results.append({
-                'filename': file.filename,
-                'rows': int(len(df)),
-                'columns': list(df.columns),
-                'preview': preview_df.to_dict('records'),
-                'csv_data': df.to_csv(index=False)
+            validated_tests.append({
+                'test_name': f'Test {test_date}',
+                'date': test_date,
+                'csv_data': csv_data,
+                'data_points': len(watts_list)
             })
         
         return jsonify({
             'success': True,
-            'files': results
+            'tests': validated_tests
         })
         
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        import traceback
+        return jsonify({
+            'error': str(e),
+            'traceback': traceback.format_exc()
+        }), 500
 
 @app.route('/calculate', methods=['POST'])
 def calculate():
     try:
         data = request.json
-        files_data = data.get('files_data')
         
-        if not files_data:
+        # Support both old 'files_data' and new 'tests' format
+        tests_data = data.get('tests') or data.get('files_data')
+        
+        if not tests_data:
             return jsonify({'error': 'No data provided'}), 400
         
         results = []
         
-        for file_info in files_data:
-            filename = file_info.get('filename')
+        for file_info in tests_data:
+            # Support both 'test_name' (new format) and 'filename' (old format)
+            filename = file_info.get('test_name') or file_info.get('filename')
             csv_data = file_info.get('csv_data')
             
             try:

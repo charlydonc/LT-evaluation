@@ -13,33 +13,64 @@
         .subtitle { color: #666; }
         .content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .panel { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .upload-area { border: 2px dashed #ddd; padding: 40px; text-align: center; border-radius: 8px; margin-bottom: 20px; cursor: pointer; transition: all 0.3s; }
-        .upload-area:hover { border-color: #4CAF50; background: #f9f9f9; }
-        .upload-area.dragover { border-color: #4CAF50; background: #e8f5e9; }
-        input[type="file"] { display: none; }
+        
+        /* Tab Navigation */
+        .tabs-container { margin-bottom: 20px; }
+        .tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+        .tab { padding: 10px 20px; background: #f5f5f5; border: 2px solid #ddd; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; color: #666; transition: all 0.3s; white-space: nowrap; position: relative; }
+        .tab:has(.tab-delete) { padding-right: 32px; }
+        .tab:hover { background: #e8f5e9; border-color: #81C784; color: #2e7d32; }
+        .tab.active { background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); color: white; border-color: #4CAF50; box-shadow: 0 3px 8px rgba(76, 175, 80, 0.4); font-weight: 600; transform: translateY(-2px); }
+        .tab-delete { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; background: white; color: #666; border: 2px solid #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; cursor: pointer; transition: all 0.2s; line-height: 1; z-index: 10; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .tab-delete:hover { background: #f5f5f5; color: #f44336; border-color: #f44336; transform: scale(1.1); }
+        .tab-content { display: none; padding: 20px; background: #fafafa; border: 2px solid #e0e0e0; border-radius: 8px; margin-top: 5px; }
+        .tab-content.active { display: block; }
+        
+        /* Form Styles */
+        .date-input-group { margin-bottom: 20px; }
+        .date-input-group label { display: block; font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px; }
+        .date-input-group input[type="date"] { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 14px; }
+        
+        .intervals-container { margin-bottom: 20px; }
+        .intervals-header { display: grid; grid-template-columns: 80px 1fr 1fr 1fr 50px; gap: 12px; align-items: center; margin-bottom: 10px; padding: 10px 15px; background: #e0e0e0; border-radius: 8px; font-weight: 600; font-size: 13px; color: #333; }
+        .interval-row { display: grid; grid-template-columns: 80px 1fr 1fr 1fr 50px; gap: 12px; align-items: center; margin-bottom: 12px; padding: 15px; background: #f8f9fa; border-radius: 8px; }
+        .interval-row input { padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 14px; width: 100%; }
+        .interval-row input:focus { outline: none; border-color: #4CAF50; }
+        .interval-label { font-weight: 600; font-size: 14px; color: #333; }
+        .remove-btn { background: #f44336; color: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; font-size: 18px; transition: background 0.3s; }
+        .remove-btn:hover { background: #d32f2f; }
+        
         .btn { background: #4CAF50; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 500; width: 100%; margin-top: 10px; transition: background 0.3s; }
         .btn:hover { background: #45a049; }
         .btn:disabled { background: #ccc; cursor: not-allowed; }
+        .btn-secondary { background: #2196F3; }
+        .btn-secondary:hover { background: #1976D2; }
+        .btn-danger { background: #f44336; }
+        .btn-danger:hover { background: #d32f2f; }
+        
         .status { padding: 15px; border-radius: 6px; margin: 15px 0; }
         .status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         .status.info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        
         .results { margin-top: 20px; }
         .metric { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #4CAF50; }
         .metric-label { font-size: 14px; color: #666; margin-bottom: 5px; }
         .metric-value { font-size: 32px; font-weight: bold; color: #333; }
         .metric-unit { font-size: 18px; color: #666; }
-        select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 15px; font-size: 14px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background: #f8f9fa; font-weight: 600; }
+        
         .plot-container { margin-top: 20px; text-align: center; }
         .plot-container img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        
         .loading { display: none; text-align: center; padding: 20px; }
         .loading.active { display: block; }
         .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #4CAF50; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @media (max-width: 968px) { .content { grid-template-columns: 1fr; } }
+        
+        @media (max-width: 968px) { 
+            .content { grid-template-columns: 1fr; }
+            .interval-row { grid-template-columns: 1fr; gap: 8px; }
+        }
     </style>
 </head>
 <body>
@@ -61,39 +92,46 @@
                     It also estimates your <strong>FTP (Functional Threshold Power)</strong> as 95% of LT2, representing the maximum power you can sustain for approximately one hour.
                 </p>
                 <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #333;">
-                    Upload your test results to get accurate power-based training zones and track your progress over time.
+                    Enter your test results manually below to get accurate power-based training zones and track your progress over time.
                 </p>
             </div>
         </div>
 
         <div class="content">
             <div class="panel">
-                <h2>📁 Data Import</h2>
+                <h2 style="margin-bottom: 25px;">📝 Protocol Data</h2>
                 
-                <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
-                    <p style="font-size: 18px; margin-bottom: 10px;">📤 Drag and drop CSV files here</p>
-                    <p style="color: #666;">or click to browse</p>
-                    <p style="font-size: 12px; color: #999; margin-top: 10px;">CSV must have: watts, lactate<br>RPE (1-10 scale) is optional for validation</p>
-                    <p style="font-size: 12px; color: #4CAF50; margin-top: 5px; font-weight: 500;">✨ Upload multiple files to compare!</p>
+                <div class="tabs-container">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 15px;">
+                        <div class="tabs" id="testTabs" style="flex-grow: 1;">
+                            <button class="tab active" data-test="1" onclick="switchTab(1)">Test 1</button>
+                        </div>
+                        <button class="btn btn-secondary" onclick="addNewTest()" style="width: auto; padding: 8px 16px; margin: 0; font-size: 14px; flex-shrink: 0;">
+                            ➕ Add Another Test
+                        </button>
+                    </div>
+                    
+                    <div id="tabContents">
+                        <!-- Tab contents will be dynamically generated -->
+                    </div>
                 </div>
-                <input type="file" id="fileInput" accept=".csv" multiple onchange="handleFileSelect(event)">
                 
-                <div id="fileStatus"></div>
-                
-                <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #2196F3;">
+                <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2196F3;">
                     <h3 style="margin: 0 0 10px 0; color: #1976D2;">⚙️ Calculation Methods</h3>
                     <p style="margin: 5px 0; font-size: 14px;"><strong>LT1:</strong> Log-Log Transformation</p>
                     <p style="margin: 5px 0; font-size: 14px;"><strong>LT2:</strong> Modified Dmax</p>
                     <p style="margin: 10px 0 0 0; font-size: 12px; color: #666;">These are the most scientifically accurate methods.</p>
+                    <p style="margin: 10px 0 0 0; font-size: 12px; color: #666;"><em>RPE (1-10 scale) is optional for validation only.</em></p>
                 </div>
                 
-                <button class="btn" id="calculateBtn" onclick="calculateThresholds()" disabled>🔢 Calculate Thresholds</button>
+                <button class="btn" onclick="calculateThresholds()">🔢 Calculate Thresholds</button>
                 
                 <div class="loading" id="loading">
                     <div class="spinner"></div>
                     <p style="margin-top: 10px;">Calculating...</p>
                 </div>
                 
+                <div id="statusMessage"></div>
                 <div id="resultsContainer"></div>
             </div>
 
@@ -101,7 +139,7 @@
                 <h2>📊 Visualization</h2>
                 <div id="plotContainer">
                     <div style="padding: 60px; text-align: center; color: #999;">
-                        <p style="font-size: 18px;">📈 Upload a CSV file and calculate thresholds to see the lactate curve</p>
+                        <p style="font-size: 18px;">📈 Enter test data and calculate thresholds to see the lactate curve</p>
                     </div>
                 </div>
             </div>
@@ -109,90 +147,287 @@
     </div>
 
     <script>
-        let filesData = [];
+        let testCounter = 1;
+        let tests = {};
         
-        // Drag and drop handlers
-        const uploadArea = document.getElementById('uploadArea');
+        // Initialize first test
+        function initializeTests() {
+            tests[1] = {
+                date: '',
+                intervals: []
+            };
+            renderTabContent(1);
+            // Add 5 intervals on page load
+            addInterval(1);
+            addInterval(1);
+            addInterval(1);
+            addInterval(1);
+            addInterval(1);
+        }
         
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.classList.add('dragover');
-        });
-        
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.classList.remove('dragover');
-        });
-        
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
-            const files = Array.from(e.dataTransfer.files);
-            if (files.length > 0) {
-                handleFiles(files);
-            }
-        });
-        
-        function handleFileSelect(event) {
-            const files = Array.from(event.target.files);
-            if (files.length > 0) {
-                handleFiles(files);
+        function renderTabContent(testId) {
+            const container = document.getElementById('tabContents');
+            
+            // Create tab content if it doesn't exist
+            if (!document.getElementById(`test-${testId}-content`)) {
+                const tabContent = document.createElement('div');
+                tabContent.id = `test-${testId}-content`;
+                // First test should be active by default
+                tabContent.className = testId === 1 ? 'tab-content active' : 'tab-content';
+                tabContent.innerHTML = `
+                    <div class="date-input-group">
+                        <label for="date-${testId}">📅 Test Date</label>
+                        <input type="date" id="date-${testId}" onchange="updateTestDate(${testId}, this.value); updateTabName(${testId}, this.value);" value="${tests[testId]?.date || ''}">
+                    </div>
+                    
+                    <div class="intervals-container">
+                        <div class="intervals-header">
+                            <div></div>
+                            <div>Power (W)</div>
+                            <div>Lactate (mmol/L)</div>
+                            <div>RPE 1-10 <span style="font-size: 11px; font-weight: normal; color: #666;">(optional)</span></div>
+                            <div></div>
+                        </div>
+                        <div id="intervals-${testId}">
+                            <!-- Intervals will be added here -->
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-secondary" onclick="addInterval(${testId})" style="width: auto; padding: 10px 20px; margin-bottom: 10px;">
+                        ➕ Add Interval
+                    </button>
+                `;
+                container.appendChild(tabContent);
             }
         }
         
-        function handleFiles(files) {
-            const formData = new FormData();
-            files.forEach(file => {
-                formData.append('files[]', file);
+        function switchTab(testId) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-test="${testId}"]`).classList.add('active');
+            
+            // Update tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`test-${testId}-content`).classList.add('active');
+        }
+        
+        function addNewTest() {
+            testCounter++;
+            tests[testCounter] = {
+                date: '',
+                intervals: []
+            };
+            
+            // Add new tab button with delete icon
+            const tabsContainer = document.getElementById('testTabs');
+            const newTab = document.createElement('button');
+            newTab.className = 'tab';
+            newTab.setAttribute('data-test', testCounter);
+            const testIdForClosure = testCounter;
+            newTab.innerHTML = `
+                <span>Test ${testCounter}</span>
+                <span class="tab-delete" onclick="deleteTest(${testCounter}, event)" title="Delete test">×</span>
+            `;
+            newTab.onclick = (e) => {
+                if (!e.target.classList.contains('tab-delete')) {
+                    switchTab(testIdForClosure);
+                }
+            };
+            tabsContainer.appendChild(newTab);
+            
+            // Render tab content
+            renderTabContent(testCounter);
+            
+            // Add default 5 intervals
+            addInterval(testCounter);
+            addInterval(testCounter);
+            addInterval(testCounter);
+            addInterval(testCounter);
+            addInterval(testCounter);
+            
+            // Switch to new tab
+            switchTab(testCounter);
+        }
+        
+        function deleteTest(testId, event) {
+            // Prevent tab switch when clicking delete icon
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            if (Object.keys(tests).length === 1) {
+                alert('Cannot delete the last test. At least one test is required.');
+                return;
+            }
+            
+            // Remove from data structure
+            delete tests[testId];
+            
+            // Remove tab button
+            document.querySelector(`[data-test="${testId}"]`).remove();
+            
+            // Remove tab content
+            document.getElementById(`test-${testId}-content`).remove();
+            
+            // Switch to first remaining test
+            const firstTestId = Object.keys(tests)[0];
+            switchTab(parseInt(firstTestId));
+        }
+        
+        function addInterval(testId) {
+            if (!tests[testId].intervals) {
+                tests[testId].intervals = [];
+            }
+            
+            const intervalId = tests[testId].intervals.length;
+            tests[testId].intervals.push({
+                power: '',
+                lactate: '',
+                rpe: ''
             });
             
-            document.getElementById('fileStatus').innerHTML = `<div class="status info">⏳ Loading ${files.length} file(s)...</div>`;
-            document.getElementById('calculateBtn').disabled = true;
+            const container = document.getElementById(`intervals-${testId}`);
+            const intervalRow = document.createElement('div');
+            intervalRow.className = 'interval-row';
+            intervalRow.id = `interval-${testId}-${intervalId}`;
+            intervalRow.innerHTML = `
+                <div class="interval-label">Interval ${intervalId + 1}</div>
+                <input type="number" placeholder="Power (W)" step="1" min="0" 
+                       onchange="updateInterval(${testId}, ${intervalId}, 'power', this.value)" 
+                       value="${tests[testId].intervals[intervalId].power}">
+                <input type="number" placeholder="Lactate (mmol/L)" step="0.1" min="0" 
+                       onchange="updateInterval(${testId}, ${intervalId}, 'lactate', this.value)" 
+                       value="${tests[testId].intervals[intervalId].lactate}">
+                <input type="number" placeholder="RPE (1-10)" step="1" min="1" max="10" 
+                       onchange="updateInterval(${testId}, ${intervalId}, 'rpe', this.value)" 
+                       value="${tests[testId].intervals[intervalId].rpe}">
+                <button class="remove-btn" onclick="removeInterval(${testId}, ${intervalId})" title="Remove interval">×</button>
+            `;
+            container.appendChild(intervalRow);
+        }
+        
+        function removeInterval(testId, intervalId) {
+            const row = document.getElementById(`interval-${testId}-${intervalId}`);
+            if (row) {
+                row.remove();
+                // Mark as deleted in data structure
+                if (tests[testId] && tests[testId].intervals[intervalId]) {
+                    tests[testId].intervals[intervalId] = null;
+                }
+            }
+        }
+        
+        function updateTestDate(testId, value) {
+            if (tests[testId]) {
+                tests[testId].date = value;
+            }
+        }
+        
+        function updateTabName(testId, dateValue) {
+            const tabButton = document.querySelector(`[data-test="${testId}"]`);
+            if (tabButton) {
+                const span = tabButton.querySelector('span:first-child') || tabButton;
+                if (dateValue) {
+                    // Format date to a nice display
+                    const dateObj = new Date(dateValue + 'T00:00:00');
+                    const formattedDate = dateObj.toLocaleDateString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+                    if (span === tabButton) {
+                        // First test (no delete icon)
+                        tabButton.textContent = formattedDate;
+                    } else {
+                        // Other tests (has delete icon)
+                        span.textContent = formattedDate;
+                    }
+                } else {
+                    if (span === tabButton) {
+                        tabButton.textContent = `Test ${testId}`;
+                    } else {
+                        span.textContent = `Test ${testId}`;
+                    }
+                }
+            }
+        }
+        
+        function updateInterval(testId, intervalId, field, value) {
+            if (tests[testId] && tests[testId].intervals[intervalId]) {
+                tests[testId].intervals[intervalId][field] = value;
+            }
+        }
+        
+        function validateAndCollectTests() {
+            const validTests = [];
             
-            fetch('/upload', {
+            for (const testId in tests) {
+                const test = tests[testId];
+                
+                if (!test.date) {
+                    alert(`Test ${testId}: Please enter a test date.`);
+                    switchTab(parseInt(testId));
+                    return null;
+                }
+                
+                // Filter out null intervals (removed ones)
+                const validIntervals = test.intervals.filter(i => i !== null && i.power && i.lactate);
+                
+                if (validIntervals.length < 3) {
+                    alert(`Test ${testId}: At least 3 intervals with Power and Lactate values are required.`);
+                    switchTab(parseInt(testId));
+                    return null;
+                }
+                
+                validTests.push({
+                    date: test.date,
+                    intervals: validIntervals
+                });
+            }
+            
+            return validTests;
+        }
+        
+        function calculateThresholds() {
+            const validTests = validateAndCollectTests();
+            
+            if (!validTests) {
+                return;
+            }
+            
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('statusMessage').innerHTML = '';
+            document.getElementById('resultsContainer').innerHTML = '';
+            
+            // First, submit the test data
+            fetch('/submit-test', {
                 method: 'POST',
-                body: formData
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tests: validTests })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    document.getElementById('fileStatus').innerHTML = `<div class="status error">❌ ${data.error}</div>`;
-                } else {
-                    filesData = data.files;
-                    let statusHtml = '<div class="status success">✅ Files loaded successfully<br><br>';
-                    data.files.forEach(file => {
-                        statusHtml += `<strong>${file.filename}</strong>: ${file.rows} data points<br>`;
-                    });
-                    statusHtml += '</div>';
-                    document.getElementById('fileStatus').innerHTML = statusHtml;
-                    document.getElementById('calculateBtn').disabled = false;
+                    throw new Error(data.error);
                 }
-            })
-            .catch(error => {
-                document.getElementById('fileStatus').innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
-            });
-        }
-        
-        function calculateThresholds() {
-            if (!filesData || filesData.length === 0) return;
-            
-            document.getElementById('loading').classList.add('active');
-            document.getElementById('calculateBtn').disabled = true;
-            document.getElementById('resultsContainer').innerHTML = '';
-            
-            fetch('/calculate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    files_data: filesData
-                })
+                
+                // Now calculate with the submitted data
+                return fetch('/calculate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tests: data.tests })
+                });
             })
             .then(response => response.json())
             .then(data => {
                 document.getElementById('loading').classList.remove('active');
-                document.getElementById('calculateBtn').disabled = false;
                 
                 if (data.error) {
-                    document.getElementById('resultsContainer').innerHTML = `<div class="status error">❌ ${data.error}</div>`;
+                    document.getElementById('statusMessage').innerHTML = `<div class="status error">❌ ${data.error}</div>`;
                 } else {
                     const results = data.results;
                     
@@ -308,7 +543,7 @@
                     
                     document.getElementById('resultsContainer').innerHTML = `
                         <div class="results">
-                            <h3 style="margin: 20px 0 15px 0;">📊 Comparison Results</h3>
+                            <h3 style="margin: 20px 0 15px 0;">📊 Results</h3>
                             ${comparisonHtml}
                             <p style="margin-top: 15px; font-size: 12px; color: #666; text-align: center;">
                                 <strong>Methods:</strong> LT1 = Log-Log | LT2 = Modified Dmax
@@ -329,44 +564,24 @@
                         }
                     });
                     document.getElementById('plotContainer').innerHTML = plotsHtml || '<p>No plots available</p>';
+                    
+                    document.getElementById('statusMessage').innerHTML = `<div class="status success">✅ Calculations complete!</div>`;
                 }
             })
             .catch(error => {
                 document.getElementById('loading').classList.remove('active');
-                document.getElementById('calculateBtn').disabled = false;
-                document.getElementById('resultsContainer').innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+                document.getElementById('statusMessage').innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
             });
         }
+        
+        // Initialize on page load
+        window.onload = function() {
+            initializeTests();
+        };
     </script>
 
     <!-- Footer with References -->
     <div style="margin-top: 40px; padding: 30px; background: #f8f9fa; border-top: 1px solid #ddd; border-radius: 10px; max-width: 1400px; margin-left: auto; margin-right: auto;">
-        <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-            <h4 style="margin: 0 0 15px 0; font-size: 14px; color: #333; text-align: center;">📋 CSV File Format</h4>
-            <p style="margin: 0 0 12px 0; font-size: 12px; color: #666; text-align: center;">
-                Your CSV must contain 'watts' (or 'power') and 'lactate' columns.<br>
-                RPE (1-10 scale) is optional for validation only.
-            </p>
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #e0e0e0; font-family: 'Courier New', monospace; font-size: 11px; overflow-x: auto; margin-bottom: 12px;">
-                <div style="color: #999; margin-bottom: 5px;">Example format:</div>
-                <div style="color: #333;">
-                    <span style="font-weight: bold;">watts,lactate,rpe</span><br>
-                    150,1.1,2<br>
-                    170,1.2,3<br>
-                    190,1.3,4<br>
-                    210,1.5,5<br>
-                    230,1.9,6<br>
-                    250,2.8,7<br>
-                    270,4.2,8<br>
-                    290,6.5,9
-                </div>
-            </div>
-            <div style="text-align: center;">
-                <a href="/download-template" download="lactate_test_template.csv" style="display: inline-block; background: #2196F3; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 500; transition: background 0.3s;">
-                    📥 Download Template CSV
-                </a>
-            </div>
-        </div>
         <details style="text-align: center; margin-top: 20px;">
             <summary style="cursor: pointer; font-size: 11px; color: #999; user-select: none;">
                 📚 Scientific References & Sources
